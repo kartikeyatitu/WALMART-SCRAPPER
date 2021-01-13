@@ -14,7 +14,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 //this means that we have to save data in local database and we have to authenticate data in our database, it has many other stratigies like facebookStrategy,twittrer Strategy which are used for different purposes
-//requiring user routes and admin routes
+//requiringuserroutes and admin routes
 const userRoutes = require('./routes/users');
 const adminRoutes=require('./routes/admin');
 const User = require('./models/usermodel');
