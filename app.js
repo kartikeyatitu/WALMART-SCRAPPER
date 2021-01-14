@@ -7,7 +7,7 @@ const ejs = require('ejs');
 const path = require('path');
 const dotenv = require('dotenv');
 const methodOverride = require('method-override');
-const session = require('express-session');
+const session = require('cookie-session');
 
 
 const flash = require('connect-flash');
