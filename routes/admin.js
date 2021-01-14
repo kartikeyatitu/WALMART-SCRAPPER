@@ -18,10 +18,10 @@ function isAuthenticatedUser(req, res, next) {
 
 async function scrapeData(url, page) {
     try {
-        await page.goto(url, { waitUntil: 'domcontentloaded' })
+        await page.goto(url, {waitUntil: 'load', timeout : 0});
 
         //await page.goto(url, {waitUntil : 'load', timeout : 0});
-        const html = await page.evaluate(() => document.body.innerHTML,await page.$('body'));
+        const html = await page.evaluate(() => document.body.innerHTML);
         const $ = await cheerio.load(html);
 
         let title = $("h1").attr('content');
@@ -308,9 +308,4 @@ router.delete('/delete/product/:id', isAuthenticatedUser, (req, res)=> {
 router.get('*', (req, res)=> {
     res.render('./admin/notfound');
 });
-
-
-
-
-
 module.exports=router;
