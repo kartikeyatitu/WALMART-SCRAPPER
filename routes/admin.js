@@ -18,7 +18,7 @@ function isAuthenticatedUser(req, res, next) {
 async function scrapeData(url, page) {
     try {
 
-        await page.goto(url, {waitUntil : 'load', timeout : 0});
+        await page.goto(url, {waitUntil : 'domcontentloaded', timeout : 0});
         const html = await page.evaluate(() => document.body.innerHTML);
         const $ = await cheerio.load(html);
 
@@ -98,7 +98,7 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
         let url = req.query.search;
         if(url) {
              browser = await puppeteer.launch({args: ['--no-sandbox']});
-            let page = await browser.newPage();
+            const page = await browser.newPage();
             let result = await scrapeData(url,page);
 
             let productData = {
@@ -108,7 +108,7 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
                 productUrl : result.url
             };
             res.render('./admin/newproduct', {productData : productData});
-            
+            browser.close();
         } else {
             let productData = {
                 title : "",
@@ -117,7 +117,7 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
                 productUrl : ""
             };
             res.render('./admin/newproduct', {productData : productData});
-            browser.close();
+            
         }
     } catch (error) {
         req.flash('error_msg', 'ERROR: '+error);
@@ -215,6 +215,9 @@ router.get('/products/notupdated', isAuthenticatedUser, (req,res)=> {
 
 
 
+router.get('/update', isAuthenticatedUser, (req,res)=> {
+    res.render('./admin/update', {message : ''});
+});
 
 router.post('/product/new', isAuthenticatedUser, (req,res)=> {
     let {title, price, stock, url, sku} = req.body;
@@ -250,9 +253,6 @@ router.post('/product/new', isAuthenticatedUser, (req,res)=> {
         });
 });
 
-router.get('/update', isAuthenticatedUser, (req,res)=> {
-    res.render('./admin/update', {message : ''});
-});
 
 router.post('/update', isAuthenticatedUser, async(req, res)=>{
     try {
@@ -266,7 +266,7 @@ router.post('/update', isAuthenticatedUser, async(req, res)=>{
                 }
 
                browser = await puppeteer.launch({args: ['--no-sandbox']});
-                let page = await browser.newPage();
+                const page = await browser.newPage();
 
                 for(let i=0; i<products.length; i++) {
                     let result = await scrapeData(products[i].url,page);
