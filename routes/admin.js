@@ -97,7 +97,10 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
     try {
         let url = req.query.search;
         if(url) {
-            browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+            browser = await puppeteer.launch({ args: [ '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--single-process'] });
             const page = await browser.newPage();
             let result = await scrapeData(url,page);
 
@@ -264,7 +267,10 @@ router.post('/update', isAuthenticatedUser, async(req, res)=>{
                         .then(products => {})
                 }
 
-                browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+                browser = await puppeteer.launch({ args: [ '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--single-process'] });
                 const page = await browser.newPage();
 
                 for(let i=0; i<products.length; i++) {
