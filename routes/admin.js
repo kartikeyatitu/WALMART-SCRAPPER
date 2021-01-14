@@ -18,7 +18,7 @@ function isAuthenticatedUser(req, res, next) {
 async function scrapeData(url, page) {
     try {
 
-        await page.goto(url, {waitUntil : 'networkidle2'});
+        await page.goto(url, {waitUntil : 'load', timeout : 10000});
         const html = await page.evaluate(() => document.body.innerHTML);
         const $ = await cheerio.load(html);
 
