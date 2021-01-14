@@ -15,6 +15,7 @@ function isAuthenticatedUser(req, res, next) {
   }
  let browser;
 //scrapping data from that walmart website
+
 async function scrapeData(url, page) {
     try {
         await page.waitForNavigation(url,{
