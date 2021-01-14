@@ -18,12 +18,10 @@ function isAuthenticatedUser(req, res, next) {
 
 async function scrapeData(url, page) {
     try {
-        await page.waitForNavigation(url,{
-            waitUntil: 'networkidle2',
-          });
+        await page.goto(url, { waitUntil: 'domcontentloaded' })
 
         //await page.goto(url, {waitUntil : 'load', timeout : 0});
-        const html = await page.evaluate(() => document.body.innerHTML);
+        const html = await page.evaluate(() => document.body.innerHTML,await page.$('body'));
         const $ = await cheerio.load(html);
 
         let title = $("h1").attr('content');
