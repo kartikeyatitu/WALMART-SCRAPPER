@@ -108,7 +108,7 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
                 productUrl : result.url
             };
             res.render('./admin/newproduct', {productData : productData});
-            browser.close();
+            
         } else {
             let productData = {
                 title : "",
@@ -117,6 +117,7 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
                 productUrl : ""
             };
             res.render('./admin/newproduct', {productData : productData});
+            browser.close();
         }
     } catch (error) {
         req.flash('error_msg', 'ERROR: '+error);
@@ -278,12 +279,12 @@ router.post('/update', isAuthenticatedUser, async(req, res)=>{
             })
             .catch(err => {
                 req.flash('error_msg', 'ERROR: '+err);
-                res.redirect('./admin/dashboard');
+                res.redirect('/dashboard');
             });
         
     } catch (error) {
         req.flash('error_msg', 'ERROR: '+err);
-        res.redirect('./admin/dashboard');
+        res.redirect('admin/dashboard');
     }
 });
 
