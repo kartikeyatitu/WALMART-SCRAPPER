@@ -4,7 +4,7 @@ const path = require('path');
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 //requiring product model
-let browser;
+const browser;
 let Product=require('../models/productmodel');
 function isAuthenticatedUser(req, res, next) {
     if (req.isAuthenticated()) {
@@ -96,7 +96,8 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
     try {
         let url = req.query.search;
         if(url) {
-            browser = await puppeteer.launch({args: ['--no-sandbox']});
+            browser = await puppeteer.launch({args: ['--no-sandbox',
+            '--disable-setuid-sandbox']});
             const page = await browser.newPage();
             let result = await scrapeData(url,page);
 
@@ -263,7 +264,8 @@ router.post('/update', isAuthenticatedUser, async(req, res)=>{
                         .then(products => {})
                 }
 
-                browser = await puppeteer.launch({args: ['--no-sandbox'] });
+                browser = await puppeteer.launch({args: ['--no-sandbox',
+                '--disable-setuid-sandbox'] });
                 const page = await browser.newPage();
 
                 for(let i=0; i<products.length; i++) {
