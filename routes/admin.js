@@ -96,9 +96,8 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
     try {
         let url = req.query.search;
         if(url) {
-            browser = await puppeteer.launch({args: ['--no-sandbox',
-            '--disable-setuid-sandbox']});
-            let page = await browser.newPage();
+            browser = await puppeteer.launch({headless:false});
+            var page = await browser.newPage();
             let result = await scrapeData(url,page);
 
             let productData = {
@@ -264,9 +263,8 @@ router.post('/update', isAuthenticatedUser, async(req, res)=>{
                         .then(products => {})
                 }
 
-                browser = await puppeteer.launch({args: ['--no-sandbox',
-                '--disable-setuid-sandbox'] });
-                let page = await browser.newPage();
+                browser = await puppeteer.launch({headless:false});
+                var page = await browser.newPage();
 
                 for(let i=0; i<products.length; i++) {
                     let result = await scrapeData(products[i].url,page);
