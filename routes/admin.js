@@ -13,7 +13,7 @@ function isAuthenticatedUser(req, res, next) {
     req.flash('error_msg', 'Please Login first to access this page.')
     res.redirect('/login');
   }
- 
+ let browser;
 //scrapping data from that walmart website
 async function scrapeData(url, page) {
     try {
@@ -97,8 +97,8 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
     try {
         let url = req.query.search;
         if(url) {
-            const browser = await puppeteer.launch({args: ['--no-sandbox']});
-            const page = await browser.newPage();
+             browser = await puppeteer.launch({args: ['--no-sandbox']});
+            let page = await browser.newPage();
             let result = await scrapeData(url,page);
 
             let productData = {
@@ -264,8 +264,8 @@ router.post('/update', isAuthenticatedUser, async(req, res)=>{
                         .then(products => {})
                 }
 
-              const browser = await puppeteer.launch({args: ['--no-sandbox']});
-                const page = await browser.newPage();
+               browser = await puppeteer.launch({args: ['--no-sandbox']});
+                let page = await browser.newPage();
 
                 for(let i=0; i<products.length; i++) {
                     let result = await scrapeData(products[i].url,page);
