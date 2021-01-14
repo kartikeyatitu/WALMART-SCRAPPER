@@ -4,7 +4,7 @@ const path = require('path');
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 //requiring product model
-let browser;
+
 let Product=require('../models/productmodel');
 function isAuthenticatedUser(req, res, next) {
     if (req.isAuthenticated()) {
@@ -13,6 +13,7 @@ function isAuthenticatedUser(req, res, next) {
     req.flash('error_msg', 'Please Login first to access this page.')
     res.redirect('/login');
   }
+  let browser;
 //scrapping data from that walmart website
 async function scrapeData(url, page) {
     try {
@@ -96,8 +97,8 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
     try {
         let url = req.query.search;
         if(url) {
-            browser = await puppeteer.launch({headless:false});
-            var page = await browser.newPage();
+            browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+            const page = await browser.newPage();
             let result = await scrapeData(url,page);
 
             let productData = {
@@ -263,8 +264,8 @@ router.post('/update', isAuthenticatedUser, async(req, res)=>{
                         .then(products => {})
                 }
 
-                browser = await puppeteer.launch({headless:false});
-                var page = await browser.newPage();
+                browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+                const page = await browser.newPage();
 
                 for(let i=0; i<products.length; i++) {
                     let result = await scrapeData(products[i].url,page);

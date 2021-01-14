@@ -27,7 +27,7 @@ mongoose.connect(process.env.DATABASE, {
 
     console.log('Database Connected Successfully');
 });
-app.use(methodOverride('_method'));
+
 app.use(session({
     secret: "This is a simple login/signup application",
     resave: true,
@@ -41,6 +41,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, User.authenticate()))
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+app.use(methodOverride('_method'));
 app.use(flash());
 
 //setting message variable globaly
