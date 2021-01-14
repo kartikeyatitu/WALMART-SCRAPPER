@@ -8,6 +8,8 @@ const path = require('path');
 const dotenv = require('dotenv');
 const methodOverride = require('method-override');
 const session = require('express-session');
+
+const MemoryStore = require('memorystore')(session)
 const flash = require('connect-flash');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -30,6 +32,9 @@ mongoose.connect(process.env.DATABASE, {
 
 app.use(session({
     secret: "This is a simple login/signup application",
+    store: new MemoryStore({
+        checkPeriod: 86400000 // prune expired entries every 24h
+      }),
     resave: true,
     saveUninitialized: true
 }));
