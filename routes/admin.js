@@ -14,13 +14,14 @@ function isAuthenticatedUser(req, res, next) {
     res.redirect('/login');
   }
  let browser;
+ 
 //scrapping data from that walmart website
 
 async function scrapeData(url, page) {
     try {
         await page.goto(url, {waitUntil: 'load', timeout : 0});
 
-        //await page.goto(url, {waitUntil : 'load', timeout : 0});
+        
         const html = await page.evaluate(() => document.body.innerHTML);
         const $ = await cheerio.load(html);
 
