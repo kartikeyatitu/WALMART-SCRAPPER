@@ -101,7 +101,7 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
         if(url) {
              
              browser = await puppeteer.launch({
-                headless: false,
+                headless: true,
                 args: ['--no-sandbox', '--disable-setuid-sandbox']
              })
             //browser = await puppeteer.launch({args: ['--no-sandbox']});
@@ -272,7 +272,7 @@ router.post('/update', isAuthenticatedUser, async(req, res)=>{
                         .then(products => {})
                 }
                 browser = await puppeteer.launch({
-                    headless: false,
+                    headless: true,
                     args: ['--no-sandbox', '--disable-setuid-sandbox']
                  })
               // browser = await puppeteer.launch({args: ['--no-sandbox']});
