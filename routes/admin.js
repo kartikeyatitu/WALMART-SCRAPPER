@@ -19,7 +19,7 @@ function isAuthenticatedUser(req, res, next) {
 
 async function scrapeData(url, page) {
     try {
-        await page.goto(url, {waitUntil: 'load', timeout : 5000});
+        await page.goto(url, {waitUntil: 'load', timeout : 0});
 
         
         const html = await page.evaluate(() => document.body.innerHTML);
@@ -100,9 +100,7 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
         let url = req.query.search;
         if(url) {
              
-             browser = await puppeteer.launch({
-                headless: true,
-                args: ['--no-sandbox', '--disable-setuid-sandbox']
+             browser = await puppeteer.launch({args: ['--no-sandbox']
              })
             //browser = await puppeteer.launch({args: ['--no-sandbox']});
             const page = await browser.newPage();
@@ -272,8 +270,7 @@ router.post('/update', isAuthenticatedUser, async(req, res)=>{
                         .then(products => {})
                 }
                 browser = await puppeteer.launch({
-                    headless: true,
-                    args: ['--no-sandbox', '--disable-setuid-sandbox']
+                    args: ['--no-sandbox']
                  })
               // browser = await puppeteer.launch({args: ['--no-sandbox']});
                 const page = await browser.newPage();
