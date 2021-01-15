@@ -13,7 +13,7 @@ function isAuthenticatedUser(req, res, next) {
     req.flash('error_msg', 'Please Login first to access this page.')
     res.redirect('/login');
   }
- let browser;
+ const browser;
 
 //scrapping data from that walmart website
 
