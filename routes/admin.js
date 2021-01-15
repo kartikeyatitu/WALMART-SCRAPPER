@@ -71,7 +71,7 @@ async function scrapeData(url, page) {
             stock,
             url
         }
-        browser.close();
+       await browser.close();
 
            
          
@@ -103,7 +103,7 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
              browser = await puppeteer.launch({args: ['--no-sandbox']
              })
             //browser = await puppeteer.launch({args: ['--no-sandbox']});
-            const page = await browser.newPage();
+            var page = await browser.newPage();
             let result = await scrapeData(url,page);
 
             let productData = {
@@ -113,7 +113,7 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
                 productUrl : result.url
             };
             res.render('./admin/newproduct', {productData : productData});
-            browser.close();
+            await browser.close();
         } else {
             let productData = {
                 title : "",
@@ -273,7 +273,7 @@ router.post('/update', isAuthenticatedUser, async(req, res)=>{
                     args: ['--no-sandbox']
                  })
               // browser = await puppeteer.launch({args: ['--no-sandbox']});
-                const page = await browser.newPage();
+                var page = await browser.newPage();
 
                 for(let i=0; i<products.length; i++) {
                     let result = await scrapeData(products[i].url,page);
@@ -281,7 +281,7 @@ router.post('/update', isAuthenticatedUser, async(req, res)=>{
                         .then(products => {})
                 }
 
-                browser.close();
+                await browser.close();
 
             })
             .catch(err => {
