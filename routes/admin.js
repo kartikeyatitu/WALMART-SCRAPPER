@@ -71,7 +71,6 @@ async function scrapeData(url, page) {
             stock,
             url
         }
-        
         browser.close();
 
            
