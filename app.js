@@ -12,7 +12,6 @@ const MemoryStore = require('memorystore')(session)
 const flash = require('connect-flash');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 //this means that we have to save data in local database and we have to authenticate data in our database, it has many other stratigies like facebookStrategy,twittrer Strategy which are used for different purposes
@@ -34,7 +33,7 @@ app.use(session({
     secret: "This is a simple login/signup application",
     cookie: { maxAge: 86400000 },
     store: new MemoryStore({
-      checkPeriod: 86400000 // prune expired entries every 24h
+      checkPeriod: 86400000 
     }),
     resave: true,
     saveUninitialized: true
