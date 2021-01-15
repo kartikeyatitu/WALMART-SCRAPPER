@@ -14,7 +14,7 @@ function isAuthenticatedUser(req, res, next) {
     res.redirect('/login');
   }
  let browser;
- 
+
 //scrapping data from that walmart website
 
 async function scrapeData(url, page) {
@@ -100,7 +100,12 @@ router.get('/product/new', isAuthenticatedUser, async (req, res)=> {
     try {
         let url = req.query.search;
         if(url) {
-             browser = await puppeteer.launch({args: ['--no-sandbox']});
+             
+             browser = await puppeteer.launch({
+                headless: false,
+                args: ['--no-sandbox', '--disable-setuid-sandbox']
+             })
+            //browser = await puppeteer.launch({args: ['--no-sandbox']});
             const page = await browser.newPage();
             let result = await scrapeData(url,page);
 
@@ -267,8 +272,11 @@ router.post('/update', isAuthenticatedUser, async(req, res)=>{
                     Product.updateOne({'url' : products[i].url}, {$set: {'oldprice' : products[i].newprice, 'oldstock' : products[i].newstock, 'updatestatus' : 'Not Updated'}})
                         .then(products => {})
                 }
-
-               browser = await puppeteer.launch({args: ['--no-sandbox']});
+                browser = await puppeteer.launch({
+                    headless: false,
+                    args: ['--no-sandbox', '--disable-setuid-sandbox']
+                 })
+              // browser = await puppeteer.launch({args: ['--no-sandbox']});
                 const page = await browser.newPage();
 
                 for(let i=0; i<products.length; i++) {

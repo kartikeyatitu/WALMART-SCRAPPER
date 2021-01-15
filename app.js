@@ -7,9 +7,7 @@ const ejs = require('ejs');
 const path = require('path');
 const dotenv = require('dotenv');
 const methodOverride = require('method-override');
-const session = require('cookie-session');
-
-
+const session = require('express-session');
 const flash = require('connect-flash');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -18,21 +16,20 @@ const LocalStrategy = require('passport-local').Strategy;
 //this means that we have to save data in local database and we have to authenticate data in our database, it has many other stratigies like facebookStrategy,twittrer Strategy which are used for different purposes
 //requiringuserroutes and admin routes
 const userRoutes = require('./routes/users');
-const adminRoutes=require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 const User = require('./models/usermodel');
 dotenv.config({ path: './config.env' });//middleware for dotenv.we are also going to write databse url in dotenv file later and is used to setup environment variables for our project
 mongoose.connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
-}).then(con =>{
+}).then(con => {
 
     console.log('Database Connected Successfully');
 });
 
 app.use(session({
     secret: "This is a simple login/signup application",
-   
     resave: true,
     saveUninitialized: true
 }));
@@ -56,7 +53,7 @@ app.use((req, res, next) => {
     res.locals.currentUser = req.user;//to pass the user globallu so that we can use it globally
     next();
 });
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
